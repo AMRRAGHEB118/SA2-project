@@ -1,0 +1,81 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "bus-dest_service",
+    "collectionId": "04de9f71-f103-46b3-8e7e-db1f0244082a",
+    "dateExported": "2024-05-05T12:09:42.878Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "e70e4b37-9489-4a38-ab71-5d802cb17d95",
+            "colId": "04de9f71-f103-46b3-8e7e-db1f0244082a",
+            "containerId": "",
+            "name": "get_all",
+            "url": "http://127.0.0.1:5000/api/getDestinations",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-05-04T19:33:29.216Z",
+            "modified": "2024-05-04T21:01:25.111Z",
+            "headers": []
+        },
+        {
+            "_id": "224f1309-8b85-4ffd-90e5-99c19c37fa17",
+            "colId": "04de9f71-f103-46b3-8e7e-db1f0244082a",
+            "containerId": "",
+            "name": "create_main_table",
+            "url": "http://127.0.0.1:5000/api/createTable",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-05-04T20:42:57.618Z",
+            "modified": "2024-05-04T20:48:24.948Z",
+            "headers": []
+        },
+        {
+            "_id": "a0326c3a-00dc-494e-9d70-3ffa8e4e0f15",
+            "colId": "04de9f71-f103-46b3-8e7e-db1f0244082a",
+            "containerId": "",
+            "name": "create_destination",
+            "url": "http://127.0.0.1:5000/api/createDestination",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2024-05-04T21:00:44.957Z",
+            "modified": "2024-05-04T22:06:07.399Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\r\n  \"destination_name\": \"cairo to sharm\",\r\n  \"appointments\": [  \r\n    {\"time\": \"11:30 AM\", \"status\": \"confirmed\"},\r\n    {\"time\": \"2:00 PM\", \"status\": \"confirmed\"}\r\n  ]\r\n}\r\n",
+                "form": []
+            }
+        },
+        {
+            "_id": "5f7881b2-ab54-40fd-b37a-0440b881a1a8",
+            "colId": "04de9f71-f103-46b3-8e7e-db1f0244082a",
+            "containerId": "",
+            "name": "update_destination",
+            "url": "http://localhost:5000/api/updateDestination/1",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2024-05-04T21:42:40.607Z",
+            "modified": "2024-05-04T22:12:09.845Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"destination_name\": \"cairo to sharm\",\n  \"appointments\": [  \n    {\"time\": \"11:00 AM\", \"status\": \"pending\"},\n    {\"time\": \"3:00 PM\", \"status\": \"confirmed\"}\n  ]\n}\n",
+                "form": []
+            }
+        },
+        {
+            "_id": "563fb9d2-4b40-488b-8f13-62292216888c",
+            "colId": "04de9f71-f103-46b3-8e7e-db1f0244082a",
+            "containerId": "",
+            "name": "delete_destination",
+            "url": "http://localhost:5000/api/deleteDestination/5",
+            "method": "DELETE",
+            "sortNum": 50000,
+            "created": "2024-05-04T22:05:19.699Z",
+            "modified": "2024-05-04T22:05:41.230Z",
+            "headers": []
+        }
+    ],
+    "ref": "cshSCrSf1X-cN1aZs0zI_8euuDoOOe2Okh_6EECJ1kLUav0N9Xf40bnfdbF2oYKMhrk1FcYVSAj_r96NoMxoJA"
+}

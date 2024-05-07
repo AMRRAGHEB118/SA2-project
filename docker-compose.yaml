@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  bus_destination_db:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=123
+      - MYSQL_DATABASE=bus_destination
+      - MYSQL_USER=users
+      - MYSQL_PASSWORD=users
+    ports:
+      - "3307:3307"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  bus_destination_service:
+    build:
+      context: ./bus_destination_service
+      dockerfile: Dockerfile
+    container_name: destination_service_container
+    restart: always
+    depends_on:
+      - api_gateway_service
+    ports:
+      - "5001:5001"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend_container
+    restart: always
+    ports:
+      - "8080:8080"
+
+  api_gateway_service:
+    build:
+      context: ./api_gateway
+      dockerfile: Dockerfile
+    container_name: api_gateway_container
+    restart: always
+    ports:
+      - "5191:5191"
+
+volumes:
+  mysql_data:
+    driver: local
