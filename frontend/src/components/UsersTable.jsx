@@ -13,6 +13,9 @@ function UsersTable () {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const handleDeleteUser = (id) => {
         dispatch(deleteUser(id))
+        setTimeout(() => {
+            dispatch(getUsers())
+        }, 300)
     }
 
     const handleEditUser = (id) => {
@@ -27,19 +30,19 @@ function UsersTable () {
         } else {
             // eslint-disable-next-line react/prop-types
             return users.map((user) => (
-                <tr key={user.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <tr key={user.Id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {user.userName}
                     </th>
                     <td className="px-6 py-4">
-                        {user.email}
+                        {user.Email}
                     </td>
                     <td className="px-6 py-4">
-                        {user.phoneNumber}
+                        {user.PhoneNumber}
                     </td>
                     <td className="px-6 py-4">
                         <button
-                            onClick={() => handleEditUser(user.id)}
+                            onClick={() => handleEditUser(user.Id)}
                             type="button"
                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                         >
@@ -48,7 +51,7 @@ function UsersTable () {
                     </td>
                     <td className="px-6 py-4">
                         <button
-                            onClick={() => handleDeleteUser(user.id)}
+                            onClick={() => handleDeleteUser(user.Id)}
                             type="button"
                             className="font-medium text-red-600 dark:text-red-500 hover:underline"
                         >

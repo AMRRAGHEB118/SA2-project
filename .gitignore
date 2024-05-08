@@ -1,3 +1,4 @@
 api_gateway/node_modules
 BusBookingUsers/obj
 BusBookingUsers/bin
+user_service/node_modules

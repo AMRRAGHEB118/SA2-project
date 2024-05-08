@@ -3,6 +3,7 @@ const app = express();
 const morgan = require('morgan');
 const cors = require('cors');
 const BusDestinationRoute = require('./routes/bus_destination_route');
+const UserRoute = require('./routes/user_route');
 
 
 app.use(morgan('dev'));
@@ -15,7 +16,8 @@ app.get('/', (req, res) => {
 })
 
 
-app.use('/api/BusDestination', BusDestinationRoute)
+app.use('/api/BusDestinations', BusDestinationRoute)
+app.use('/api/Users', UserRoute)
 
 
 app.listen(5191, () => {

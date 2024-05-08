@@ -1,10 +1,10 @@
-const { axiosBusDestinationInstance } = require('../axios_instances')
+const { axiosBusDestinationInstance } = require("../axiosInstance");
 
 
 exports.createBusDestination = async (req, res) => {
     const { destination } = req.query
     try {
-        const response = await axiosBusDestinationInstance.post('/api/createDestination', { destination })
+        const response = await axiosBusDestinationInstance.post(`/api/createDestination?destination=${destination}`);
         res.status(201).json(response.data)
     } catch (error) {
         res.status(400).json({ error: error.message })
@@ -15,7 +15,7 @@ exports.createBusDestination = async (req, res) => {
 exports.getDestinations = async (req, res) => {
     try {
         const response = await axiosBusDestinationInstance.get('/api/getDestinations')
-        res.status(201).json(response.data)
+        res.status(200).json(response.data)
     } catch (error) {
         res.status(400).json({ error: error.message })
     }

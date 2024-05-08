@@ -8,7 +8,7 @@ const axiosBusDestinationInstance = axios.create({
 })
 
 const axiosUserInstance = axios.create({
-    baseURL: 'http://user_service_container:5229',
+    baseURL: 'http://user_service_container:8003',
     headers: {
         'Content-Type': 'application/json'
     }

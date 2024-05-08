@@ -23,7 +23,6 @@ def index():
 def create_table():
     try:
         with mysql.connector.connect(**db_config) as connection:
-
             cursor = connection.cursor()
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS bus_destinations (
@@ -42,58 +41,76 @@ def create_table():
 @app.route('/api/createDestination', methods=['POST'])
 def create_destination():
     try:
-        request_data = request.get_json()
-        destination_name = request_data.get('destination_name')
+        destination = request.args.get('destination')
 
-        if not destination_name:
+        if not destination:
             return ({"message": "the destination name is required"} ,422)
 
         with mysql.connector.connect(**db_config) as connection:
             cursor = connection.cursor()
 
             insert_query = """
-                INSERT INTO bus_destinations (destination_name)
+                INSERT INTO bus_destinations (DestinationName)
                 VALUES (%s)
             """
-            cursor.execute(insert_query, (destination_name))
+            cursor.execute(insert_query, (destination,))
 
             connection.commit()
 
             get_query = "SELECT * FROM bus_destinations"
             cursor.execute(get_query)
-            destinations = cursor.fetchone()
+            destinations = cursor.fetchall()
 
-        return jsonify({"data": destinations}), 201
+            destinations_list = []
+            for destination in destinations:
+                destination_dict = {
+                    "id": destination[0],
+                    "destinationName": destination[1]
+                }
+                destinations_list.append(destination_dict)
+
+        return destinations_list, 201
     
     except mysql.connector.Error as err:
+        return jsonify({"messege": f"Error connecting to database: {err}"}), 500
+    except Exception as err:
         return jsonify({"messege": f"Error connecting to database: {err}"}), 500
 
 @app.route('/api/updateDestination/<int:destination_id>', methods=['PUT'])
 def update_destination(destination_id):
     try:
         request_data = request.get_json()
-        destination_name = request_data.get('destination_name')
-        appointments = json.dumps(request_data.get('appointments'))
+        destination_name = request_data.get('destination')
         
         if not destination_name:
             return ({"message": "the destination name is required"} ,422)
 
-        if not appointments:
-            return ({"message": "the appointments are required"} ,422)
 
         with mysql.connector.connect(**db_config) as connection:
             cursor = connection.cursor()
 
             update_query = """
                 UPDATE bus_destinations
-                SET destination_name = %s, appointments = %s, updated_at = CURRENT_TIMESTAMP
-                WHERE id = %s
+                SET DestinationName = %s, updated_at = CURRENT_TIMESTAMP
+                WHERE Id = %s
             """
-            cursor.execute(update_query, (destination_name, appointments, destination_id))
+            cursor.execute(update_query, (destination_name, destination_id))
 
             connection.commit()
 
-            return jsonify({"message": "Destination updated successfully"}), 200
+            get_query = "SELECT * FROM bus_destinations"
+            cursor.execute(get_query)
+            destinations = cursor.fetchall()
+
+            destinations_list = []
+            for destination in destinations:
+                destination_dict = {
+                    "id": destination[0],
+                    "destinationName": destination[1]
+                }
+                destinations_list.append(destination_dict)
+
+        return destinations_list, 200
         
     except mysql.connector.Error as err:
         return jsonify({"error": f"Error updating destination: {err}"}), 500
@@ -104,45 +121,52 @@ def get_destinations():
         with mysql.connector.connect(**db_config) as connection:
             cursor = connection.cursor()
 
-            cursor.execute("SELECT * FROM bus_destinations ")  
+            cursor.execute("SELECT * FROM bus_destinations")  
 
             data = cursor.fetchall()
 
-        formatted_data = []
-        for row in data:
-            formatted_data.append({
-                'id': row[0],
-                'destination_name': row[1],
-                'created_at': row[2],  
-                'appointments': json.loads(row[3]),
-                'updated_at': row[4] if row[4] else None  # Convert to ISO format or None
-            })
+        destinations_list = []
+        for destination in data:
+            destination_dict = {
+                "id": destination[0],
+                "destinationName": destination[1]
+            }
+            destinations_list.append(destination_dict)
 
-
-        return jsonify({"data": formatted_data}), 200
+        return destinations_list, 200
     
     except mysql.connector.Error as err:
-        return f"Error connecting to database: {err}"
+        return jsonify({"message": f"Error connecting to database: {err}"}), 500
 
 @app.route('/api/deleteDestination/<int:destination_id>', methods=['DELETE'])
 def delete_destination(destination_id):
     try:
         with mysql.connector.connect(**db_config) as connection:
             cursor = connection.cursor()
-            check_query = "SELECT id FROM bus_destinations WHERE id = %s"
+            check_query = "SELECT Id FROM bus_destinations WHERE Id = %s"
             cursor.execute(check_query, (destination_id,))
             existing_id = cursor.fetchone()
 
             if not existing_id:
                 return jsonify({"message": "Destination ID not found"}), 404
 
-            delete_query = "DELETE FROM bus_destinations WHERE id = %s"
+            delete_query = "DELETE FROM bus_destinations WHERE Id = %s"
             cursor.execute(delete_query, (destination_id,))
             connection.commit()
 
+            get_query = "SELECT * FROM bus_destinations"
+            cursor.execute(get_query)
+            destinations = cursor.fetchall()
 
+            destinations_list = []
+            for destination in destinations:
+                destination_dict = {
+                    "id": destination[0],
+                    "destinationName": destination[1]
+                }
+                destinations_list.append(destination_dict)
 
-            return jsonify({"message": "Destination deleted successfully"}), 200
+        return destinations_list, 200
         
     except mysql.connector.Error as err:
         return jsonify({"message": f"Error deleting destination: {err}"}), 500
