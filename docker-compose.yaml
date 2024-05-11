@@ -28,7 +28,7 @@ services:
     depends_on:
       - api_gateway_service
     ports:
-      - "5001:5001"
+      - "5005:5001"
 
   user_service_container:
     build:
@@ -58,6 +58,59 @@ services:
     restart: always
     ports:
       - "5191:5191"
+
+  bookings_db:
+    image: mysql:8.0
+
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DATABASE: booking
+
+    ports:
+      - "3310:3306"
+
+  bookings_service:
+    build: 
+      context: ./bookings_service
+      dockerfile: Dockerfile
+    container_name: bookings_service_container
+    command: ["python", "run.py"]
+    restart: always
+    depends_on:
+      - api_gateway_service
+    environment:
+      MYSQL_HOST: bookings_db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: mysql
+      MYSQL_DATABASE: booking
+    ports:
+      - "5002:5000"
+  
+  appointments_db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DATABASE: appointment
+    ports:
+      - "3309:3306"
+
+  appointments_service:
+    build:
+      context: ./appointments_service
+      dockerfile: Dockerfile
+    container_name: appointments_service_container
+    command: ["python", "run.py"]
+    restart: always
+    depends_on:
+      - api_gateway_service
+    environment:
+      MYSQL_HOST: appointments_db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: mysql
+      MYSQL_DATABASE: appointment
+    ports:
+      - "5001:5000"
+
 
 volumes:
   mysql_data:

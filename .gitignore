@@ -1,4 +1,6 @@
 api_gateway/node_modules
 BusBookingUsers/obj
 BusBookingUsers/bin
+WeatherForcast/WeatherForcast/obj
+WeatherForcast/WeatherForcast/bin
 user_service/node_modules
